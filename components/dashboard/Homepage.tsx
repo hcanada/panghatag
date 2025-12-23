@@ -6,7 +6,7 @@ export default function Homepage() {
   return (
     <main>
       <Wrapper className="max-w-xl my-20 md:my-28">
-        <main className="min-h-screen ">
+        <main>
           <section className="text-center space-y-6 text-pretty">
             <h1 className="font-bold text-4xl  leading-tight">
               Give and Receive freely in your community
