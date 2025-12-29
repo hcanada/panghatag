@@ -12,44 +12,40 @@ interface CarouselPhotoProps {
 }
 
 export default function CarouselPhoto({ images, title }: CarouselPhotoProps) {
-  return Object.keys(images).length > 1 ? (
-    <Carousel className="ml-10">
-      <CarouselContent>
-        {images.map((image, index) => {
-          console.log(images);
-          console.log(typeof images, "haha");
-          console.log(Object.keys(images).length > 1);
-          return (
-            <CarouselItem className="relative h-screen w-full " key={index}>
-              <div
-                className="absolute inset-0 bg-no-repeat bg-cover bg-center blur-lg "
-                style={{ backgroundImage: `url(${image})` }}
-              />
-              <Image
-                src={image}
-                alt={title}
-                fill
-                className="object-contain blur-none"
-              />
-            </CarouselItem>
-          );
-        })}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
-  ) : (
-    <div className="relative h-screen w-full">
-      <div
-        className="absolute inset-0 bg-no-repeat bg-cover bg-center blur-lg "
-        style={{ backgroundImage: `url(${images[0]})` }}
-      />
-      <Image
-        src={images[0]}
-        alt={title}
-        fill
-        className="object-contain blur-none"
-      />
+  return (
+    <div className="h-full min-h-0">
+      <Carousel className=" h-full">
+        <CarouselContent className="h-full">
+          {images.map((image, index) => {
+            return (
+              <CarouselItem className="relative h-full" key={index}>
+                <div
+                  className="absolute inset-0 bg-no-repeat bg-cover bg-center blur-lg"
+                  style={{ backgroundImage: `url(${image})` }}
+                />
+                <Image
+                  src={image}
+                  alt={title}
+                  fill
+                  className="object-contain"
+                />
+              </CarouselItem>
+            );
+          })}
+        </CarouselContent>
+        {images.length > 1 && (
+          <>
+            <CarouselPrevious
+              className="absolute left-4 size-10 "
+              variant={"secondary"}
+            />
+            <CarouselNext
+              className="absolute right-4 size-10"
+              variant={"secondary"}
+            />
+          </>
+        )}
+      </Carousel>
     </div>
   );
 }
