@@ -19,19 +19,24 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
   //
 
   return (
-    <main>
-      <Wrapper className="max-w-512">
-        <div className="grid md:grid-cols-2">
+    <main className="h-full min-h-0">
+      <div className="grid lg:grid-cols-4 h-full min-h-0">
+        <div className="lg:col-span-3  h-full min-h-0 overflow-hidden">
           <CarouselPhoto images={data[0].images} title={data[0].title} />
-          <div className="flex flex-col gap-y-2 mt-20 items-center">
-            <h1 className="font-bold text-3xl">{data[0].title}</h1>{" "}
-            <p className="text-lg">{data[0].description}</p>
-            <p className="text-xs">{data[0].city}</p>
-            <p className="text-muted-foreground">{data[0].status}</p>
-            <Button>Claim</Button>
-          </div>
         </div>
-      </Wrapper>
+        <div className="flex flex-col gap-y-2 pt-20 pl-10 overflow-y-auto bg-gray-800">
+          <h1 className="font-bold text-3xl">{data[0].title}</h1>{" "}
+          <p className="text-lg">{data[0].description}</p>
+          <p className="text-xs">{data[0].city}</p>
+          <p className="text-muted-foreground">{data[0].status}</p>
+          <Button>Claim</Button>
+          <h1 className="font-bold text-3xl">{data[0].title}</h1>{" "}
+          <p className="text-lg">{data[0].description}</p>
+          <p className="text-xs">{data[0].city}</p>
+          <p className="text-muted-foreground">{data[0].status}</p>
+          <Button>Claim</Button>
+        </div>
+      </div>
     </main>
   );
 }
