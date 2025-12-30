@@ -9,7 +9,6 @@ export default async function NavBar() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log("Current user:", user);
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 dark:bg-[#18191A] backdrop-blur-sm">
       <nav className="w-full flex h-16 justify-between items-center px-4 md:px-8 lg:px-16">
