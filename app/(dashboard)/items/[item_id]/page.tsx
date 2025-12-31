@@ -1,8 +1,6 @@
 import CarouselPhoto from "@/components/items/carousel-items";
-import Wrapper from "@/components/layout/Wrapper";
-import { Button } from "@/components/ui/button";
+import ClaimButton from "@/components/items/claim-button";
 import { createClient } from "@/lib/supabase/server";
-import Image from "next/image";
 
 type Item_id = {
   item_id: string;
@@ -24,17 +22,12 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
         <div className="lg:col-span-3  h-full min-h-0 overflow-hidden">
           <CarouselPhoto images={data[0].images} title={data[0].title} />
         </div>
-        <div className="flex flex-col gap-y-2 pt-20 pl-10 overflow-y-auto bg-gray-800">
+        <div className="flex flex-col gap-y-2 pt-20 px-6 overflow-y-auto bg-gray-800">
           <h1 className="font-bold text-3xl">{data[0].title}</h1>{" "}
           <p className="text-lg">{data[0].description}</p>
           <p className="text-xs">{data[0].city}</p>
           <p className="text-muted-foreground">{data[0].status}</p>
-          <Button>Claim</Button>
-          <h1 className="font-bold text-3xl">{data[0].title}</h1>{" "}
-          <p className="text-lg">{data[0].description}</p>
-          <p className="text-xs">{data[0].city}</p>
-          <p className="text-muted-foreground">{data[0].status}</p>
-          <Button>Claim</Button>
+          <ClaimButton />
         </div>
       </div>
     </main>
