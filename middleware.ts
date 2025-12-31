@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
   if (
     user &&
     (request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/register")
+      request.nextUrl.pathname === "/signup")
   ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
@@ -46,5 +46,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/upload"],
+  matcher: ["/login", "/signup", "/upload"],
 };
