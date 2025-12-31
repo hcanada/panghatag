@@ -88,8 +88,7 @@ export default async function Items() {
                     src={item.images[0]}
                     alt={item.title}
                     fill
-                    objectFit="cover"
-                    className="rounded-md"
+                    className="rounded-md object-cover"
                   />
                   {/* <p className="absolute text-sm  bottom-0 left-0 pl-2 pb-2">
                   {item.status}
@@ -99,8 +98,9 @@ export default async function Items() {
                 <p className="text-sm text-shadow-muted-foreground font-medium ">
                   {item.description}
                 </p>
-                <footer className="text-sm text-muted-foreground mt-auto">
-                  {item.city}
+                <footer className="flex flex-col text-sm text-muted-foreground mt-auto">
+                  <p>{item.city}</p>
+                  <p>{item.status}</p>
                 </footer>
               </Link>
             </div>
