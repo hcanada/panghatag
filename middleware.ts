@@ -38,7 +38,6 @@ export async function middleware(request: NextRequest) {
 
     // 👇 remember where they came from
     loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
-    console.log(loginUrl);
     return NextResponse.redirect(loginUrl);
   }
 
