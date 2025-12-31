@@ -10,10 +10,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const searchParams = useSearchParams();
+  const redirectParam = searchParams.get("redirect");
+  const redirectTo =
+    redirectParam && redirectParam.startsWith("/") ? redirectParam : "/";
+
   const supabase = createClient();
   const route = useRouter();
   const [username, setUsername] = useState("");
@@ -44,7 +49,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       console.error(error.message);
       return;
     }
-    route.push("/");
+    route.push(redirectTo);
     route.refresh();
   };
 
