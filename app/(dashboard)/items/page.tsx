@@ -69,7 +69,6 @@ export default async function Items() {
   const { data: items, error } = await supabase
     .from("items")
     .select("id, title,description,images,status,city");
-  console.log(items, "items");
   if (error) return;
 
   return (
