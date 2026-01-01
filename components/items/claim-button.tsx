@@ -10,7 +10,24 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
-export default function ClaimButton() {
+type ItemData = {
+  id: number;
+  user_id: string;
+  title: string;
+  description: string;
+  category: string;
+  images: string[];
+  city: string;
+  barangay: string;
+  status: string;
+  created_at: Date;
+  claimed_by: string | null;
+};
+type ClaimButtonProps = {
+  data: ItemData;
+};
+
+export default function ClaimButton({ data }: ClaimButtonProps) {
   const supabase = createClient();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -20,16 +37,30 @@ export default function ClaimButton() {
       data: { user },
       error,
     } = await supabase.auth.getUser();
+
     if (error || !user) {
       setOpen(true);
       return;
     }
-    console.log("claimed");
+
+    const res = await fetch("/api/claims", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: data.id,
+        claimed_by: user.id,
+      }),
+    });
+    router.refresh();
   };
 
   return (
     <>
-      <Button onClick={handleClaim} className="w-full">
+      <Button
+        disabled={data.status !== "available"}
+        onClick={handleClaim}
+        className="w-full"
+      >
         Claim
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
