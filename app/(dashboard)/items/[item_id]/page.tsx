@@ -27,7 +27,7 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
           <p className="text-lg">{data[0].description}</p>
           <p className="text-xs">{data[0].city}</p>
           <p className="text-muted-foreground">{data[0].status}</p>
-          <ClaimButton />
+          <ClaimButton data={data[0]} />
         </div>
       </div>
     </main>
