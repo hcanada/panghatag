@@ -8,8 +8,14 @@ import { Paperclip } from "lucide-react";
 import React, { useState } from "react";
 
 export default function Upload() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    city: "",
+    barangay: "",
+  });
+
   const [files, setFiles] = useState<File[]>([]);
   // test
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
@@ -35,13 +41,27 @@ export default function Upload() {
     setPreviewUrls(updatedPreviewUrls);
   };
 
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+    console.log(form);
+  };
+
   //###################//###################//###################//###################
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("category", form.category);
+    formData.append("city", form.city);
+    formData.append("barangay", form.barangay);
     files.forEach((file) => {
       formData.append("images", file);
     });
@@ -52,8 +72,13 @@ export default function Upload() {
     });
     console.log(res);
     if (!res.ok) return;
-    setTitle("");
-    setDescription("");
+    setForm({
+      title: "",
+      description: "",
+      category: "",
+      city: "",
+      barangay: "",
+    });
     setFiles([]);
     console.log(files);
   }
@@ -68,19 +93,50 @@ export default function Upload() {
             <Textarea
               id="title"
               className="resize-none h-12"
-              value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
+              value={form.title}
+              onChange={handleFormChange}
               required
             />
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
               className="h-32 resize-none"
-              value={description}
-              onChange={(e) => setDescription(e.currentTarget.value)}
+              value={form.description}
+              onChange={handleFormChange}
               required
             />
-
+            <div className="flex gap-4">
+              <div className="space-y-4">
+                <Label htmlFor="category">Category</Label>
+                <Textarea
+                  id="category"
+                  className="h-12 resize-none "
+                  value={form.category}
+                  onChange={handleFormChange}
+                  required
+                />
+              </div>
+              <div className="space-y-4">
+                <Label htmlFor="city">City</Label>
+                <Textarea
+                  id="city"
+                  className="h-12 resize-none "
+                  value={form.city}
+                  onChange={handleFormChange}
+                  required
+                />
+              </div>
+              <div className="space-y-4">
+                <Label htmlFor="barangay">Barangay</Label>
+                <Textarea
+                  id="barangay"
+                  className="h-12 resize-none"
+                  value={form.barangay}
+                  onChange={handleFormChange}
+                  required
+                />
+              </div>
+            </div>
             <Input
               id="file"
               type="file"
