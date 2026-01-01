@@ -1,14 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("items").select();
-  console.log("test");
-  if (error) return NextResponse.json({ message: "error" });
-  return NextResponse.json(data);
-}
-
 // Handle POST request
 export async function POST(req: Request) {
   const formData = await req.formData();
@@ -65,13 +57,3 @@ export async function POST(req: Request) {
     { status: 200 }
   );
 }
-
-// export async function PUT(req: Request) {
-//   // Handle PUT request
-//   return NextResponse.json({ message: "PUT request received" });
-// }
-
-// export async function DELETE(req: Request) {
-//   // Handle DELETE request
-//   return NextResponse.json({ message: "DELETE request received" });
-// }
