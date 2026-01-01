@@ -12,6 +12,7 @@ import { LogOut, Settings, SunMoon, UserRoundPen } from "lucide-react";
 import { useTheme } from "next-themes";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function NavBarMenu() {
   const supabase = createClient();
@@ -33,10 +34,12 @@ export default function NavBarMenu() {
       <DropdownMenuContent className="w-56" align="start">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <UserRoundPen /> Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("light")}>
+          <Link href={"/profile"}>
+            <DropdownMenuItem>
+              <UserRoundPen /> Profile
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuItem onClick={() => setTheme("dark")}>
             <SunMoon /> Dark mode
           </DropdownMenuItem>
           <DropdownMenuItem>
