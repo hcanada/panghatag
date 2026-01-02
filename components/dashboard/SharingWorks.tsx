@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Wrapper from "../layout/Wrapper";
+import SafetyReminder from "../ui/safety-reminder";
 
 const project = [
   {
@@ -33,9 +34,11 @@ export default function Sharing() {
       <Wrapper className="mb-20">
         <section>
           <div className="text-center space-y-4">
-            <p className="font-bold text-xs">Simple</p>
-            <h1 className="font-bold text-3xl">How sharing works</h1>
-            <p>Three straightforward steps to connect with your community</p>
+            <h1 className="font-bold text-3xl">How It Works</h1>
+            <p>
+              Sharing with your community is simple. No money changes hands—just
+              kindness.
+            </p>
           </div>
           <div className="flex flex-col md:flex-row gap-6 mt-8 text-pretty">
             {project.map((item) => (
@@ -50,12 +53,13 @@ export default function Sharing() {
                   <p className="text-sm text-pretty">{item.description}</p>
                 </CardContent>{" "}
                 <CardFooter className="mt-auto">
-                  <p>Learn more...</p>
+                  {/* <p>Learn more...</p> */}
                 </CardFooter>
               </Card>
             ))}
           </div>
         </section>
+        <SafetyReminder />
       </Wrapper>
     </main>
   );
