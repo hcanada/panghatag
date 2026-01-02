@@ -17,12 +17,18 @@ import Link from "next/link";
 export default function NavBarMenu() {
   const supabase = createClient();
   const route = useRouter();
+
+  const handleChangeTheme = async () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+  };
+
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) return console.log("Error signing out:", error.message);
     route.refresh();
   };
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,8 +45,8 @@ export default function NavBarMenu() {
               <UserRoundPen /> Profile
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
-            <SunMoon /> Dark mode
+          <DropdownMenuItem onClick={handleChangeTheme}>
+            <SunMoon /> {theme === "dark" ? "Light Mode" : "Dark Mode"}
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings /> Settings
