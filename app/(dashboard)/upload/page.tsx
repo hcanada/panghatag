@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Paperclip } from "lucide-react";
+import { ImageIcon, X } from "lucide-react";
 import React, { useState } from "react";
 
 export default function Upload() {
@@ -85,7 +85,7 @@ export default function Upload() {
 
   return (
     <main>
-      <Wrapper className="max-w-7xl grid md:grid-cols-2 gap-x-6 mt-5 md:mt-20">
+      <Wrapper className="max-w-xl lg:max-w-7xl grid lg:grid-cols-2 gap-x-6 mt-5 md:mt-20">
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <h1 className="font-bold text-2xl">Upload item</h1>
@@ -105,7 +105,7 @@ export default function Upload() {
               onChange={handleFormChange}
               required
             />
-            <div className="flex gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <div className="space-y-4">
                 <Label htmlFor="category">Category</Label>
                 <Textarea
@@ -137,41 +137,44 @@ export default function Upload() {
                 />
               </div>
             </div>
-            <Input
-              id="file"
-              type="file"
-              multiple
-              required
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-            <label
-              htmlFor="file"
-              className="hover:cursor-pointer flex gap-x-4 w-fit border p-2 rounded-md"
-            >
-              Upload Image
-              <Paperclip />
-            </label>
-            <div className="mt-4 flex gap-x-4">
-              {previewUrls.length > 0 &&
-                previewUrls.map((url, index) => (
-                  <div key={index} className="relative">
-                    {/* Image preview */}
+            <div>
+              <Label className="text-base font-medium mb-3 block">Photos</Label>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+                {previewUrls.map((img, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-square rounded-xl overflow-hidden bg-muted"
+                  >
                     <img
-                      src={url}
-                      alt={`file preview ${index}`}
-                      className="w-20 h-20 object-cover"
+                      src={img}
+                      alt=""
+                      className="h-full w-full object-cover"
                     />
-
-                    {/* Close button */}
                     <button
+                      type="button"
                       onClick={() => handleRemoveFile(index)}
-                      className="absolute top-0 right-0 bg-red-500 p-1 rounded-full hover:bg-red-700"
+                      className="absolute top-1 right-1 p-1 rounded-full bg-destructive text-destructive-foreground"
                     >
-                      ✕
+                      <X className="h-3 w-3" />
                     </button>
                   </div>
                 ))}
+                {previewUrls.length < 5 && (
+                  <label className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-primary hover:bg-primary/5 cursor-pointer flex flex-col items-center justify-center transition-colors">
+                    <ImageIcon className="h-6 w-6 text-muted-foreground mb-1" />{" "}
+                    <span className="text-xs text-muted-foreground">
+                      Add Photo
+                    </span>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
             </div>
             <Button type="submit">Upload Item</Button>
           </div>
