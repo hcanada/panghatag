@@ -1,5 +1,5 @@
 import Wrapper from "@/components/layout/Wrapper";
-import { getCurrentUser } from "@/lib/authserver";
+import { getCurrentUser } from "@/lib/auth/get-user-server";
 import { formatMonthYear } from "@/lib/date";
 import { createClient } from "@/lib/supabase/server";
 import ItemsList from "@/components/items/items-list";
