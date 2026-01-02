@@ -1,57 +1,12 @@
 import Wrapper from "@/components/layout/Wrapper";
 import { createClient } from "@/lib/supabase/server";
-import Image from "next/image";
-import Link from "next/link";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import ItemsList from "@/components/items/items-list";
 
-// const items = [
-//   {
-//     id: 1,
-//     image:
-//       "https://i5.walmartimages.com/seo/Churanty-Farmhouse-5-Piece-Kitchen-Dining-Table-Set-4-Solid-Wood-Extendable-Round-Dining-Table-Set-4-Upholstered-Chairs-Retro-Functional-Dining-Set-K_2493f543-591c-4964-997c-0537d1b43631.02acc04f55d701594c348f8efee810c8.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
-//     title: "Wooden dining table with four chairs",
-//     description: "Solid oak, good condition, seats four comfortably.  ",
-//     location: "Cebu",
-//   },
-//   {
-//     id: 2,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkFNcCKs8RXyuC-9g1qwSyH0gtIxYCteEMoQ&s",
-//     title: "Vintage desk lamp with brass base",
-//     description:
-//       "Works perfectly, warm light, adds character to any workspace.",
-//     location: "Manila",
-//   },
-//   {
-//     id: 3,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr_gZ66wEGjOjUuM7yBxGkUb2pMPa76er06Q&s",
-//     title: "Collection of fiction novels and cookbooks",
-//     description:
-//       "Thirty books total, various genres, all in readable condition.",
-//     location: "Simala",
-//   },
-//   {
-//     id: 4,
-//     image:
-//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_WmV0VEC16HDfULa8eoYGjIzn8WyDSxknQQ&s",
-//     title: "Set of ceramic dinnerware for four",
-//     description:
-//       "Includes plates, bowls, and mugs. Minimalist design, great for everyday use.",
-//     location: "Davao",
-//   },
-//   {
-//     id: 5,
+type ItemStatus = "available" | "reserved" | "claimed";
 
-//     image:
-//       "https://i5.walmartimages.com/seo/Walsunny-6-Piece-Patio-Dining-Set-with-Umbrella-Outdoor-Garden-Set-with-4-Folding-Chairs-and-Tempered-Glass-Top-Dining-Table-Black_deeb9393-ffe1-455f-b7d4-a367c5f75c67.1b1455521731332c70bb5dd5b5125b21.jpeg",
-//     title: "Outdoor patio set with umbrella",
-//     description:
-//       "Wicker furniture, cushions included, perfect for small balconies.",
-//     location: "Bohol",
-//   },
-// ];
-
-interface test {
+interface Item {
   id: number;
   user_id: string;
   title: string;
@@ -61,49 +16,43 @@ interface test {
   barangay: string;
   created_at: Date;
   city: string;
-  status: "available" | "reserved" | "claimed";
+  status: ItemStatus;
 }
+
+dayjs.extend(relativeTime);
 
 export default async function Items() {
   const supabase = await createClient();
-  const { data: items, error } = await supabase
+  const { data: item, error: itemError } = await supabase
     .from("items")
-    .select("id, title,description,images,status,city");
-  if (error) return;
+    .select()
+    .order("id", { ascending: false });
+
+  const items = item as Item[]; // Cast the data to the Item type
+
+  if (itemError) {
+    console.error("Error fetching data:", itemError);
+  }
+
+  // const { data: profile, error: profileError } = await supabase
+  //   .from("profiles")
+  //   .select()
+  //   .eq("id", items[0].user_id);
+
+  // if (profileError) {
+  //   console.error("Error fetching data:", profileError);
+  // }
+  // const usersMap = profile?.reduce((acc: Record<string, User>, user: User) => {
+  //   acc[user.id] = user;
+  //   return acc;
+  // }, {});
 
   return (
     <main>
       <Wrapper className="max-w-7xl">
         <h1 className="font-bold text-xl my-6">Todays pick</h1>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {items.map((item) => (
-            <div key={item.id}>
-              <Link
-                href={`/items/${item.id}`}
-                className="space-y-2 flex flex-col hover:underline hover:underline-offset-2 "
-              >
-                <div className="relative h-48 md:h-64 w-full">
-                  <Image
-                    src={item.images[0]}
-                    alt={item.title}
-                    fill
-                    className="rounded-md object-cover"
-                  />
-                  {/* <p className="absolute text-sm  bottom-0 left-0 pl-2 pb-2">
-                  {item.status}
-                </p> */}
-                </div>
-                <h2 className="font-bold text-xl">{item.title}</h2>
-                <p className="text-sm text-shadow-muted-foreground font-medium ">
-                  {item.description}
-                </p>
-                <footer className="flex flex-col text-sm text-muted-foreground mt-auto">
-                  <p>{item.city}</p>
-                  <p>{item.status}</p>
-                </footer>
-              </Link>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ItemsList data={items} />
         </div>
       </Wrapper>
     </main>
