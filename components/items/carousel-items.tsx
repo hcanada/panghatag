@@ -14,24 +14,13 @@ interface CarouselPhotoProps {
 export default function CarouselPhoto({ images, title }: CarouselPhotoProps) {
   return (
     <div className="h-full min-h-0">
-      <Carousel className=" h-full">
-        <CarouselContent className="h-full">
-          {images.map((image, index) => {
-            return (
-              <CarouselItem className="relative h-full" key={index}>
-                <div
-                  className="absolute inset-0 bg-no-repeat bg-cover bg-center blur-lg"
-                  style={{ backgroundImage: `url(${image})` }}
-                />
-                <Image
-                  src={image}
-                  alt={title}
-                  fill
-                  className="object-contain"
-                />
-              </CarouselItem>
-            );
-          })}
+      <Carousel className="h-full">
+        <CarouselContent className="h-full ">
+          {images.map((image, index) => (
+            <CarouselItem className="relative h-full   " key={index}>
+              <Image src={image} alt={title} fill className="object-cover" />
+            </CarouselItem>
+          ))}
         </CarouselContent>
         {images.length > 1 && (
           <>
