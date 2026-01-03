@@ -3,18 +3,26 @@ import { getCurrentUser } from "@/lib/auth/get-user-server";
 import { formatMonthYear } from "@/lib/date";
 import { createClient } from "@/lib/supabase/server";
 import ItemsList from "@/components/items/items-list";
+import Link from "next/link";
 
 export default async function Profile() {
   const supabase = await createClient();
   const user = await getCurrentUser();
 
-  const [{ data: profileData }, { data: itemsData, error }] = await Promise.all(
-    [
-      supabase.from("profiles").select("*").eq("id", user.id).single(),
-      supabase.from("items").select("*").eq("user_id", user.id),
-    ]
-  );
-  if (error) return;
+  const [
+    { data: profileData },
+    { data: itemsData, error: itemsError },
+    { data: claimData, error: claimError },
+  ] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", user.id).single(),
+    supabase.from("items").select("*").eq("user_id", user.id),
+    supabase
+      .from("claims")
+      .select("items(user_id)")
+      .eq("status", "pending")
+      .eq("items.user_id", user.id),
+  ]);
+  if (itemsError || claimError) return;
   return (
     <main>
       <Wrapper className="max-w-7xl mt-10">
@@ -30,11 +38,22 @@ export default async function Profile() {
             </div>
           </div>
         </section>
+
+        <Link href={"/requests"}>
+          <div className="flex justify-between items-center mt-6 rounded-lg border p-4 text-sm text-green-700 dark:text-green-400">
+            <div>
+              <p className="font-semibold">Manage Claim Request</p>
+              <p className="mt-1 text-xs">Review and respond to claims</p>
+            </div>
+            <div>{claimData.length} Pending</div>
+          </div>
+        </Link>
+
         <section>
           <h1 className="font-semibold text-xl md:text-3xl my-4 md:my-6">
             Items shared
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             <ItemsList data={itemsData} />
           </div>
         </section>
