@@ -1,12 +1,21 @@
 import { cn } from "@/lib/utils";
 
-type ItemStatus = "available" | "reserved" | "claimed";
+type ItemStatus =
+  | "available"
+  | "reserved"
+  | "claimed"
+  | "pending"
+  | "approved"
+  | "rejected";
 type StatusType = { status: ItemStatus; className?: string };
 
 const statusStyles: Record<ItemStatus, string> = {
   available: "border-green-400/60 bg-green-400/10 text-green-500",
   reserved: "border-yellow-400/60 bg-yellow-400/10 text-yellow-500",
   claimed: "border-gray-400/60 bg-gray-400/10 text-gray-500",
+  approved: "border-green-400/60 bg-green-400/10 text-green-500",
+  pending: "border-yellow-400/60 bg-yellow-400/10 text-yellow-500",
+  rejected: "border-red-400/60 bg-red-400/10 text-red-500",
 };
 export default function StatusBadge({ status, className }: StatusType) {
   return (
