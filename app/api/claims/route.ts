@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   // Handle POST request
-  const { id, claimed_by } = await req.json();
+  const { item_id } = await req.json();
   const supabase = await createClient();
 
   const {
@@ -11,15 +11,28 @@ export async function POST(req: Request) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized, Please log in" },
+      { status: 401 }
+    );
   }
 
+  // const { error } = await supabase
+  //   .from("items")
+  //   .update({ status: "reserved", claimed_by: claimed_by })
+  //   .eq("id", id);
+
   const { error } = await supabase
-    .from("items")
-    .update({ status: "reserved", claimed_by: claimed_by }) // claimedby test only
-    .eq("id", id);
+    .from("claims")
+    .insert({ item_id, user_id: user.id, status: "pending" });
 
   if (error) {
+    if (error.code === "23505") {
+      return NextResponse.json(
+        { error: "This item has already been claimed by you." },
+        { status: 409 }
+      );
+    }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
