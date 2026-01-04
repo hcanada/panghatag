@@ -3,6 +3,7 @@ import ClaimButton from "@/components/items/claim-button";
 import Wrapper from "@/components/layout/Wrapper";
 import SafetyReminder from "@/components/ui/safety-reminder";
 import StatusBadge from "@/components/ui/status-badge";
+import { getCurrentUserNoRedirect } from "@/lib/auth/get-user-server";
 import { createClient } from "@/lib/supabase/server";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -15,14 +16,15 @@ type Item_id = {
 dayjs.extend(relativeTime);
 export default async function Item({ params }: { params: Promise<Item_id> }) {
   const supabase = await createClient();
+  const user = await getCurrentUserNoRedirect();
   const { item_id } = await params;
+  let isOwner = false;
   const { data, error } = await supabase
     .from("items")
     .select()
     .eq("id", item_id);
   if (error) return;
-  console.log(data);
-  //
+  if (user?.id === data[0].user_id) isOwner = true;
 
   return (
     <main>
@@ -79,7 +81,7 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
 
               {/* Claim section */}
               <div className="mt-6">
-                <ClaimButton data={data[0]} />
+                <ClaimButton data={data[0]} isOwner={isOwner} />
               </div>
             </div>
           </div>
