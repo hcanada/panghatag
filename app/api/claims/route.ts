@@ -29,7 +29,10 @@ export async function POST(req: Request) {
   if (error) {
     if (error.code === "23505") {
       return NextResponse.json(
-        { error: "This item has already been claimed by you." },
+        {
+          error:
+            "You already claim this item. Please wait for the owner to approve.",
+        },
         { status: 409 }
       );
     }
