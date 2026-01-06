@@ -171,6 +171,7 @@ export default function Upload() {
                       multiple
                       onChange={handleFileChange}
                       className="hidden"
+                      required
                     />
                   </label>
                 )}
