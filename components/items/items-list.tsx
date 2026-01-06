@@ -4,29 +4,16 @@ import { MapPin } from "lucide-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
+import { Item } from "../types/item";
 
 dayjs.extend(relativeTime);
 
-type ItemStatus = "available" | "reserved" | "claimed";
-
-interface Item {
-  id: number;
-  user_id: string;
-  title: string;
-  description: string;
-  category: string;
-  images: string;
-  barangay: string;
-  created_at: Date;
-  city: string;
-  status: ItemStatus;
-}
 export default function ItemsList({ data }: { data: Item[] }) {
   return (
     <>
       {data.map((item) => {
         return (
-          <div key={item.id}>
+          <div key={item.id} className="border p-4 rounded-lg bg-muted">
             <Link
               href={`/items/${item.id}`}
               className="space-y-2 flex flex-col hover:underline hover:underline-offset-2 "
@@ -50,7 +37,11 @@ export default function ItemsList({ data }: { data: Item[] }) {
                   {item.category}
                 </span>
               </div>
-              <h2 className="font-bold text-xl">{item.title}</h2>
+              <div className="flex gap-2 items-center">
+                <div className="bg-muted-foreground size-10 rounded-full" />
+                <h2 className="font-bold text-xl">{item.profiles.username}</h2>
+              </div>
+              <h2 className="font-semibold text-xl">{item.title}</h2>
               <div className="flex flex-col text-sm text-muted-foreground mt-auto">
                 <div className=" pb-2 flex justify-between  ">
                   <p className="flex items-center gap-x-1">
@@ -63,6 +54,7 @@ export default function ItemsList({ data }: { data: Item[] }) {
           </div>
         );
       })}
+      {data.length == 0 && <div>No recently shared item</div>}
     </>
   );
 }
