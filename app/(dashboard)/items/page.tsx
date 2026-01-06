@@ -2,7 +2,7 @@ import Wrapper from "@/components/layout/Wrapper";
 import { createClient } from "@/lib/supabase/server";
 import ItemsList from "@/components/items/items-list";
 import { Item } from "@/components/types/item";
-import { SelectScrollable } from "@/components/items/select-filter";
+// import { SelectScrollable } from "@/components/items/select-filter";
 export default async function Items() {
   const supabase = await createClient();
   const { data: item, error: itemError } = await supabase
