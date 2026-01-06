@@ -1,26 +1,13 @@
 import Wrapper from "../layout/Wrapper";
 import { createClient } from "@/lib/supabase/server";
 import ItemsList from "../items/items-list";
+import { Item } from "../types/item";
 
-type ItemStatus = "available" | "reserved" | "claimed";
-
-interface Item {
-  id: number;
-  user_id: string;
-  title: string;
-  description: string;
-  category: string;
-  images: string;
-  barangay: string;
-  created_at: Date;
-  city: string;
-  status: ItemStatus;
-}
 export default async function Browse() {
   const supabase = await createClient();
   const { data: item, error } = await supabase
     .from("items")
-    .select()
+    .select("*,profiles(*)")
     .order("id", { ascending: false })
     .limit(3);
   if (error) {
