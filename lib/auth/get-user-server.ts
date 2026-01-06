@@ -15,3 +15,13 @@ export async function getCurrentUser() {
 
   return user;
 }
+
+export async function getCurrentUserNoRedirect() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return user;
+}
