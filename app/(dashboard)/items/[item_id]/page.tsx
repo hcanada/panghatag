@@ -4,6 +4,7 @@ import Wrapper from "@/components/layout/Wrapper";
 import SafetyReminder from "@/components/ui/safety-reminder";
 import StatusBadge from "@/components/ui/status-badge";
 import { getCurrentUserNoRedirect } from "@/lib/auth/get-user-server";
+import { formatMonthYear } from "@/lib/date";
 import { createClient } from "@/lib/supabase/server";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -21,7 +22,7 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
   let isOwner = false;
   const { data, error } = await supabase
     .from("items")
-    .select()
+    .select("*,profiles(*)")
     .eq("id", item_id);
   if (error) return;
   if (user?.id === data[0].user_id) isOwner = true;
@@ -66,11 +67,14 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
               {/* Owner card */}
               <div className="mt-6 rounded-lg border -50 p-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full " />
+                  <div className="h-10 w-10 rounded-full bg-muted" />
                   <div>
-                    <p className="text-sm font-semibold">Maria Santos</p>
+                    <p className="text-sm font-semibold">
+                      {data[0].profiles.username}
+                    </p>
                     <p className="text-xs text-muted-foreground">
-                      Member since January 2024
+                      Member since{" "}
+                      {formatMonthYear(data[0].profiles.created_at)}
                     </p>
                   </div>
                 </div>
