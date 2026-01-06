@@ -33,7 +33,9 @@ export default async function Profile() {
               {profileData.username}
             </h2>
             <div className="flex space-x-4 text-muted-foreground text-sm md:text-md">
-              <p>{profileData.city ?? "Null"}</p>
+              {/* temporary */}
+              {profileData.city && <p>profileData.city</p>}
+              {/* temporary */}
               <p>Member since {formatMonthYear(profileData.created_at)}</p>
             </div>
           </div>
