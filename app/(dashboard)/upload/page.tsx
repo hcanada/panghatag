@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageIcon, X } from "lucide-react";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 export default function Upload() {
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -56,6 +58,30 @@ export default function Upload() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    const requiredFields = [
+      "title",
+      "description",
+      "category",
+      "city",
+      "barangay",
+    ] as const;
+
+    for (const field of requiredFields) {
+      if (!form[field]?.toString().trim()) {
+        toast.warning(
+          `${field[0]?.toUpperCase() + field.slice(1)} is required`
+        );
+        return;
+      }
+    }
+
+    if (!files.length) {
+      toast.warning("At least one image is required");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", form.title);
     formData.append("description", form.description);
@@ -70,8 +96,10 @@ export default function Upload() {
       method: "POST",
       body: formData,
     });
-    console.log(res);
-    if (!res.ok) return;
+    if (!res.ok) {
+      setLoading(false);
+      return;
+    }
     setForm({
       title: "",
       description: "",
@@ -80,7 +108,8 @@ export default function Upload() {
       barangay: "",
     });
     setFiles([]);
-    console.log(files);
+    setPreviewUrls([]);
+    setLoading(false);
   }
 
   return (
@@ -171,13 +200,14 @@ export default function Upload() {
                       multiple
                       onChange={handleFileChange}
                       className="hidden"
-                      required
                     />
                   </label>
                 )}
               </div>
             </div>
-            <Button type="submit">Upload Item</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Loading.." : "Upload Item"}
+            </Button>
           </div>
         </form>
       </Wrapper>
