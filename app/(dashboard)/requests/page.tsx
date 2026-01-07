@@ -48,12 +48,6 @@ export default async function Request({
     console.error(error);
   }
 
-  // const itemsInClaims: Item[] =
-  //   data?.map((claim) => ({
-  //     ...claim.items,
-  //     status: claim.status, // optional: override or keep item status
-  //   })) ?? [];
-
   return (
     <main>
       <Wrapper className="max-w-7xl">
@@ -76,52 +70,56 @@ export default async function Request({
             </TabsTrigger>
           </TabsList>
         </Tabs>
-
-        <div className="grid md:grid-cols-3 gap-6 mt-10">
-          {data?.map((claim) => {
-            return (
-              <div key={claim.id}>
-                <Link
-                  href={`/items/${claim.items.id}`}
-                  className="space-y-2 flex flex-col hover:underline hover:underline-offset-2 "
-                >
-                  <div className="relative h-48 md:h-96 w-full">
-                    <Image
-                      src={claim.items.images[0]}
-                      alt={claim.items.title}
-                      fill
-                      className="rounded-md object-cover"
-                    />
-                    <StatusBadge
-                      status={claim.status}
-                      className="absolute top-2 left-2 "
-                    />
-                    <span
-                      className={
-                        "absolute top-2 right-2 flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium  border bg-white text-black capitalize"
-                      }
-                    >
-                      {claim.items.category}
-                    </span>
-                  </div>
-                  <h2 className="font-bold text-xl">{claim.items.title}</h2>
-                  <div className="flex flex-col text-sm text-muted-foreground mt-auto">
-                    <div className=" pb-2 flex justify-between  ">
-                      <p className="flex items-center gap-x-1">
-                        <MapPin size={15} /> {claim.items.barangay},{" "}
-                        {claim.items.city}
-                      </p>
-                      <p>{dayjs(claim.items.created_at).fromNow()}</p>
+        {data && data.length === 0 && (
+          <div className="mt-10">No {status} data</div>
+        )}
+        {data && (
+          <div className="grid md:grid-cols-3 gap-6 mt-10">
+            {data.map((claim) => {
+              return (
+                <div key={claim.id}>
+                  <Link
+                    href={`/items/${claim.items.id}`}
+                    className="space-y-2 flex flex-col hover:underline hover:underline-offset-2 "
+                  >
+                    <div className="relative h-48 md:h-96 w-full">
+                      <Image
+                        src={claim.items.images[0]}
+                        alt={claim.items.title}
+                        fill
+                        className="rounded-md object-cover"
+                      />
+                      <StatusBadge
+                        status={claim.status}
+                        className="absolute top-2 left-2 "
+                      />
+                      <span
+                        className={
+                          "absolute top-2 right-2 flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium  border bg-white text-black capitalize"
+                        }
+                      >
+                        {claim.items.category}
+                      </span>
                     </div>
-                  </div>
-                </Link>
-                {claim.status === "pending" && (
-                  <ApproveRejectButton data={claim} />
-                )}
-              </div>
-            );
-          })}
-        </div>
+                    <h2 className="font-bold text-xl">{claim.items.title}</h2>
+                    <div className="flex flex-col text-sm text-muted-foreground mt-auto">
+                      <div className=" pb-2 flex justify-between  ">
+                        <p className="flex items-center gap-x-1">
+                          <MapPin size={15} /> {claim.items.barangay},{" "}
+                          {claim.items.city}
+                        </p>
+                        <p>{dayjs(claim.items.created_at).fromNow()}</p>
+                      </div>
+                    </div>
+                  </Link>
+                  {claim.status === "pending" && (
+                    <ApproveRejectButton data={claim} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </Wrapper>
     </main>
   );
