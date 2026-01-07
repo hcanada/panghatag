@@ -52,7 +52,9 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
               {/* Meta */}
               <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin size={15} />
-                <span>{data[0].city}</span>
+                <span>
+                  {data[0].barangay}, {data[0].city}
+                </span>
                 <span>•</span>
                 <span>Posted {dayjs(data[0].created_at).fromNow()}</span>
               </div>
