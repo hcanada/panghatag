@@ -17,7 +17,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error }, { status: 500 });
     }
 
-    return NextResponse.json({ message: "success" }, { status: 200 });
+    return NextResponse.json(
+      { message: "success", action: "approved" },
+      { status: 200 }
+    );
   } else if (status === "rejected") {
     const { error } = await supabase
       .from("claims")
@@ -30,6 +33,10 @@ export async function POST(req: Request) {
       console.error(error);
       return NextResponse.json({ error }, { status: 500 });
     }
+    return NextResponse.json(
+      { message: "success", action: "rejected" },
+      { status: 200 }
+    );
   } else {
     return NextResponse.json({ error: "Unexpected Error" }, { status: 500 });
   }
