@@ -152,7 +152,8 @@ export default function ClaimButton({
                 This item is reserved
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Someone has already reserved this item.
+                {user?.id === data.claimed_by ? "You" : "Someone has"} already
+                reserved this item.
               </p>
             </div>
           )}
