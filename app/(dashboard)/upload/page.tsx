@@ -30,7 +30,6 @@ export default function Upload() {
     const newPreviewUrls: string[] = selectedFiles.map(
       (file) => URL.createObjectURL(file) // Create object URL for the file
     );
-    console.log(newPreviewUrls);
     setPreviewUrls(newPreviewUrls); // Update the state with the new preview URLs
   };
 
@@ -51,7 +50,6 @@ export default function Upload() {
       ...prev,
       [id]: value,
     }));
-    console.log(form);
   };
 
   //###################//###################//###################//###################

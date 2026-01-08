@@ -31,7 +31,7 @@ export function LoginForm({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -41,7 +41,6 @@ export function LoginForm({
       return;
     }
 
-    console.log(data);
     router.push(redirectTo);
     router.refresh();
   };

@@ -25,7 +25,7 @@ export default function NavBarMenu() {
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) return console.log("Error signing out:", error.message);
+    if (error) return console.error("Error signing out:", error.message);
     route.refresh();
   };
   const { theme, setTheme } = useTheme();
