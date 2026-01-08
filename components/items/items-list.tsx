@@ -1,12 +1,9 @@
 import Image from "next/image";
 import StatusBadge from "../ui/status-badge";
 import { MapPin } from "lucide-react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { Item } from "../types/item";
-
-dayjs.extend(relativeTime);
+import { getDateFromNow } from "@/lib/date";
 
 export default function ItemsList({ data }: { data: Item[] }) {
   return (
@@ -47,7 +44,7 @@ export default function ItemsList({ data }: { data: Item[] }) {
                   <p className="flex items-center gap-x-1">
                     <MapPin size={15} /> {item.barangay}, {item.city}
                   </p>
-                  <p>{dayjs(item.created_at).fromNow()}</p>
+                  <p>{getDateFromNow(item.created_at)}</p>
                 </div>
               </div>
             </Link>

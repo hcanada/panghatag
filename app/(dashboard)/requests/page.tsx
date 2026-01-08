@@ -6,25 +6,10 @@ import Link from "next/link";
 import Image from "next/image";
 import StatusBadge from "@/components/ui/status-badge";
 import { MapPin } from "lucide-react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import ApproveRejectButton from "@/components/claimrequest/approval-button";
-type ItemStatus = "available" | "reserved" | "claimed";
+import { getDateFromNow } from "@/lib/date";
 type ClaimStatus = "approved" | "rejected" | "pending";
 
-dayjs.extend(relativeTime);
-interface Item {
-  id: number;
-  user_id: string;
-  title: string;
-  description: string;
-  category: string;
-  images: string;
-  barangay: string;
-  created_at: Date;
-  city: string;
-  status: ItemStatus;
-}
 export default async function Request({
   searchParams,
 }: {
@@ -40,14 +25,13 @@ export default async function Request({
 
   const { data, error } = await supabase
     .from("claims")
-    .select("*,items(*)")
+    .select("*,items!inner (*)")
     .eq("items.user_id", user.id)
     .eq("status", status)
     .order("created_at", { ascending: false });
   if (error) {
     console.error(error);
   }
-
   return (
     <main>
       <Wrapper className="max-w-7xl">
@@ -108,7 +92,7 @@ export default async function Request({
                           <MapPin size={15} /> {claim.items.barangay},{" "}
                           {claim.items.city}
                         </p>
-                        <p>{dayjs(claim.items.created_at).fromNow()}</p>
+                        <p>{getDateFromNow(claim.items.created_at)}</p>
                       </div>
                     </div>
                   </Link>

@@ -4,17 +4,13 @@ import Wrapper from "@/components/layout/Wrapper";
 import SafetyReminder from "@/components/ui/safety-reminder";
 import StatusBadge from "@/components/ui/status-badge";
 import { getCurrentUserNoRedirect } from "@/lib/auth/get-user-server";
-import { formatMonthYear } from "@/lib/date";
+import { formatMonthYear, getDateFromNow } from "@/lib/date";
 import { createClient } from "@/lib/supabase/server";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { MapPin } from "lucide-react";
 
 type Item_id = {
   item_id: string;
 };
-
-dayjs.extend(relativeTime);
 export default async function Item({ params }: { params: Promise<Item_id> }) {
   const supabase = await createClient();
   const user = await getCurrentUserNoRedirect();
@@ -22,11 +18,10 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
   let isOwner = false;
   const { data, error } = await supabase
     .from("items")
-    .select("*,profiles(*)")
+    .select("*,profiles(*),claims(*)")
     .eq("id", item_id);
   if (error) return;
   if (user?.id === data[0].user_id) isOwner = true;
-
   return (
     <main>
       {/* Page container */}
@@ -56,7 +51,7 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
                   {data[0].barangay}, {data[0].city}
                 </span>
                 <span>•</span>
-                <span>Posted {dayjs(data[0].created_at).fromNow()}</span>
+                <span>Posted {getDateFromNow(data[0].created_at)}</span>
               </div>
 
               {/* Description */}
