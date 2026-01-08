@@ -20,7 +20,6 @@ export async function POST(req: Request) {
   const city = formData.get("city") as string;
   const barangay = formData.get("barangay") as string;
   const files = formData.getAll("images") as File[];
-  console.log(files, "files here");
 
   const imagePaths: string[] = [];
 
