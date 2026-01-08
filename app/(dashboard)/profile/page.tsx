@@ -55,7 +55,7 @@ export default async function Profile() {
           <h1 className="font-semibold text-xl md:text-3xl my-4 md:my-6">
             Items shared
           </h1>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 pb-10">
             <ItemsList data={itemsData} />
           </div>
         </section>
