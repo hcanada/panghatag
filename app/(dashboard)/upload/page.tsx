@@ -1,5 +1,6 @@
 "use client";
 import Wrapper from "@/components/layout/Wrapper";
+import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -114,6 +115,7 @@ export default function Upload() {
     <main>
       <Wrapper className="max-w-xl lg:max-w-7xl grid lg:grid-cols-2 gap-x-6 mt-5 md:mt-20">
         <form onSubmit={handleSubmit}>
+          <BackButton />
           <div className="space-y-4">
             <h1 className="font-bold text-2xl">Upload item</h1>
             <Label htmlFor="title">Title</Label>
