@@ -36,13 +36,17 @@ export default function ApproveRejectButton({
 
   const [loading, setLoading] = useState("");
 
-  const handleClick = async (status: string) => {
+  const handleClick = async (action: string) => {
     if (loading) return; // prevent double click
-    setLoading(status);
+    setLoading(action);
     const res = await fetch("/api/requestclaim", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ id: data.id, item_id: data.items.id, status }),
+      body: JSON.stringify({
+        id: data.id,
+        item_id: data.items.id,
+        action,
+      }),
     });
 
     if (res.ok) {
@@ -51,12 +55,12 @@ export default function ApproveRejectButton({
       if (result.action === "approved") {
         toast.success("Request Approved!", {
           description:
-            "The requester has been notified. Other pending requests for this item have been rejected.",
+            "The requester has been notified. Other pending requests for this item have been rejected",
           duration: 5000,
         });
       } else if (result.action === "rejected") {
         toast.error("Request Rejected!", {
-          description: "The requester has been notified.",
+          description: "The requester has been notified",
           duration: 5000,
         });
       } else {
