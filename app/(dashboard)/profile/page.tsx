@@ -18,7 +18,7 @@ export default async function Profile() {
     supabase.from("items").select("*,profiles(*)").eq("user_id", user.id),
     supabase
       .from("claims")
-      .select("items(user_id)")
+      .select("items!inner(user_id)")
       .eq("status", "pending")
       .eq("items.user_id", user.id),
   ]);
