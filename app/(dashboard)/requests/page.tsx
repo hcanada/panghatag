@@ -8,6 +8,8 @@ import StatusBadge from "@/components/ui/status-badge";
 import { MapPin } from "lucide-react";
 import ApproveRejectButton from "@/components/claimrequest/approval-button";
 import { getDateFromNow } from "@/lib/date";
+import BackButton from "@/components/ui/back-button";
+import MarkClaimButton from "@/components/claimrequest/markclaim-button";
 type ClaimStatus = "approved" | "rejected" | "pending";
 
 export default async function Request({
@@ -36,6 +38,7 @@ export default async function Request({
     <main>
       <Wrapper className="max-w-7xl">
         <div className="my-10">
+          <BackButton />
           <h1 className="font-semibold text-xl">Manage Claims</h1>
           <p className="text-muted-foreground text-sm">
             Review and respond to claim requests
@@ -58,7 +61,7 @@ export default async function Request({
           <div className="mt-10">No {status} data</div>
         )}
         {data && (
-          <div className="grid md:grid-cols-3 gap-6 mt-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
             {data.map((claim) => {
               return (
                 <div key={claim.id}>
@@ -98,7 +101,22 @@ export default async function Request({
                   </Link>
                   {claim.status === "pending" && (
                     <ApproveRejectButton data={claim} />
-                  )}
+                  )}{" "}
+                  {claim.status === "approved" &&
+                    claim.items.status === "reserved" && (
+                      <MarkClaimButton data={claim} />
+                    )}
+                  {claim.status === "approved" &&
+                    claim.items.status === "claimed" && (
+                      <div className="py-2 rounded-full bg-green-400/10 border border-green-400/20 text-center">
+                        <p className="font-medium text-green-400">
+                          Successfully given away! 🎉
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          This item has found a new home.
+                        </p>
+                      </div>
+                    )}
                 </div>
               );
             })}
