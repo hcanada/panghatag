@@ -105,14 +105,27 @@ export default function ClaimButton({
 
           {/* Status Info for Owner */}
           {data.status === "reserved" && (
-            <div className="p-4 rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-center">
-              <p className="font-medium text-yellow-400">
-                This item is reserved
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Waiting for the claimer to pick up.
-              </p>
-            </div>
+            <>
+              <div className="p-4 rounded-xl bg-yellow-400/10 border border-yellow-400/20 text-center">
+                <p className="font-medium text-yellow-400">
+                  This item is reserved
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Waiting for the claimer to pick up.
+                </p>
+              </div>
+              <Button className="w-full relative my-4" asChild>
+                <Link href="/requests?status=approved">
+                  <Users className="h-5 w-5" />
+                  View Claim Requests
+                  {/* {pendingClaimsCount > 0 && (
+                <span className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                  {pendingClaimsCount}
+                </span>
+              )} */}
+                </Link>
+              </Button>
+            </>
           )}
 
           {data.status === "claimed" && (
