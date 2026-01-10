@@ -27,7 +27,7 @@ export default async function Profile() {
     <main>
       <Wrapper className="max-w-7xl mt-10">
         <section className="flex items-center space-x-6 pb-6 md:pb-10 border-b">
-          <div className="size-20 md:size-40 bg-amber-400 rounded-full" />
+          <div className="size-20 md:size-40 bg-accent-foreground rounded-full" />
           <div>
             <h2 className="font-semibold text-2xl md:text-3xl capitalize">
               {profileData.first_name} {profileData.last_name}
