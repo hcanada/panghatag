@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ImageIcon, X } from "lucide-react";
+import { ImageIcon, LoaderCircle, X } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -72,12 +72,14 @@ export default function Upload() {
         toast.warning(
           `${field[0]?.toUpperCase() + field.slice(1)} is required`
         );
+        setLoading(false);
         return;
       }
     }
 
     if (!files.length) {
       toast.warning("At least one image is required");
+      setLoading(false);
       return;
     }
 
@@ -206,7 +208,13 @@ export default function Upload() {
               </div>
             </div>
             <Button type="submit" disabled={loading}>
-              {loading ? "Loading.." : "Upload Item"}
+              {loading ? (
+                <>
+                  <LoaderCircle className="animate-spin" /> Uploading...
+                </>
+              ) : (
+                "Upload Item"
+              )}
             </Button>
           </div>
         </form>
