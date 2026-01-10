@@ -36,7 +36,9 @@ export default function ItemsList({ data }: { data: Item[] }) {
               </div>
               <div className="flex gap-2 items-center">
                 <div className="bg-muted-foreground size-10 rounded-full" />
-                <h2 className="font-bold text-xl">{item.profiles.username}</h2>
+                <h2 className="font-bold text-xl capitalize">
+                  {item.profiles.first_name} {item.profiles.last_name}
+                </h2>
               </div>
               <h2 className="font-semibold text-xl">{item.title}</h2>
               <div className="flex flex-col text-sm text-muted-foreground mt-auto">

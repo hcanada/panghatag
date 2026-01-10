@@ -22,6 +22,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const supabase = createClient();
   const route = useRouter();
   const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -41,7 +43,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       password,
       options: {
         data: {
-          username,
+          firstname,
+          lastname,
         },
       },
     });
@@ -61,7 +64,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       <CardContent>
         <form onSubmit={handleSubmit}>
           <FieldGroup>
-            <Field>
+            {/* <Field>
               <FieldLabel htmlFor="username">Username</FieldLabel>
               <Input
                 id="username"
@@ -73,7 +76,35 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 title="Username must only contain letters and numbers"
                 required
               />
-            </Field>
+            </Field> */}
+            <FieldGroup className="flex-row">
+              <Field>
+                <FieldLabel htmlFor="firstname">First Name</FieldLabel>
+                <Input
+                  id="firstname"
+                  type="text"
+                  placeholder="John"
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.currentTarget.value)}
+                  pattern="^[A-Za-z ]+$"
+                  title="First name must only contain letters and numbers"
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="lastname">Last Name</FieldLabel>
+                <Input
+                  id="lastname"
+                  type="text"
+                  placeholder="Doe"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.currentTarget.value)}
+                  pattern="^[A-Za-z ]+$"
+                  title="Last name must only contain letters"
+                  required
+                />
+              </Field>
+            </FieldGroup>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
@@ -81,7 +112,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.currentTarget.value)}
-                placeholder="m@example.com"
+                placeholder="johndoe@example.com"
                 required
               />
             </Field>

@@ -66,8 +66,8 @@ export default async function Item({ params }: { params: Promise<Item_id> }) {
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-muted" />
                   <div>
-                    <p className="text-sm font-semibold">
-                      {data[0].profiles.username}
+                    <p className="text-sm font-semibold capitalize">
+                      {data[0].profiles.first_name} {data[0].profiles.last_name}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Member since{" "}
